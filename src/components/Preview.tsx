@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Button from './ui/Button';
 
 interface PreviewProps {
   content: string;
@@ -22,18 +23,26 @@ const Preview: React.FC<PreviewProps> = ({ content, title, tags }) => {
     }
   };
 
-  const buttonBaseStyles = "px-3 py-1 text-sm font-medium rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2";
-  const activeButtonStyles = "bg-blue-600 text-white";
-  const inactiveButtonStyles = "bg-slate-200 text-slate-700 hover:bg-slate-300";
-
   return (
     <div className="bg-slate-200 rounded-b-xl">
       {/* Viewport Control Toolbar */}
       <div className="p-3 border-b border-slate-300 flex items-center justify-center space-x-2">
         <span className="text-sm font-medium text-slate-500 mr-2">View As:</span>
-        <button className={`${buttonBaseStyles} ${width === 'mobile' ? activeButtonStyles : inactiveButtonStyles}`} onClick={() => setWidth('mobile')}>Mobile</button>
-        <button className={`${buttonBaseStyles} ${width === 'tablet' ? activeButtonStyles : inactiveButtonStyles}`} onClick={() => setWidth('tablet')}>Tablet</button>
-        <button className={`${buttonBaseStyles} ${width === 'full' ? activeButtonStyles : inactiveButtonStyles}`} onClick={() => setWidth('full')}>Desktop</button>
+        <Button
+          size="sm"
+          variant={width === 'mobile' ? 'primary' : 'secondary'}
+          onClick={() => setWidth('mobile')}
+        >Mobile</Button>
+        <Button
+          size="sm"
+          variant={width === 'tablet' ? 'primary' : 'secondary'}
+          onClick={() => setWidth('tablet')}
+        >Tablet</Button>
+        <Button
+          size="sm"
+          variant={width === 'full' ? 'primary' : 'secondary'}
+          onClick={() => setWidth('full')}
+        >Desktop</Button>
       </div>
 
       {/* Content Preview Area */}
