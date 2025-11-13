@@ -49,15 +49,8 @@ const Preview: React.FC<PreviewProps> = ({ content, title, tags }) => {
       <div className="p-8 flex justify-center overflow-auto" style={{ minHeight: '26rem' }}>
         <div
           className={`prose prose-lg bg-white p-6 shadow-md rounded-md ${getWidthClass()} w-full transition-all duration-300 ease-in-out`}
-        >
-          <h1>{title || 'Your Title Here'}</h1>
-          {tags && <div className="tags mb-4 text-sm text-slate-500">
-            {tags.split(',').map((tag, index) => (
-              <span key={`${tag.trim()}-${index}`} className="inline-block bg-slate-200 rounded-full px-3 py-1 text-sm font-semibold text-slate-700 mr-2">#{tag.trim()}</span>
-            ))}
-          </div>}
-          <div dangerouslySetInnerHTML={{ __html: content || '<p class="text-slate-400">Your content will appear here...</p>' }} />
-        </div>
+          dangerouslySetInnerHTML={{ __html: content || '<p class="text-slate-400">Your content will appear here...</p>' }}
+        />
       </div>
     </div>
   );

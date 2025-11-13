@@ -14,7 +14,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
   // Effect to initialize the editor
   useEffect(() => {
     if (editorRef.current && !quillRef.current) {
-      quillRef.current = new Quill(editorRef.current, {
+      const quill = new Quill(editorRef.current, {
         theme: 'snow',
         modules: {
           toolbar: [
@@ -28,8 +28,15 @@ const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
         },
         placeholder: "Start writing your blog post here...",
       });
+
+      quillRef.current = quill;
+
+      // Set initial content
+      if (content) {
+        quill.clipboard.dangerouslyPasteHTML(content);
+      }
     }
-  }, []); // Run only once on mount
+  }, [content]); // Note: content is only used for initial setup
 
   // Effect to handle text changes
   useEffect(() => {
@@ -46,18 +53,6 @@ const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
       };
     }
   }, [setContent]);
-
-  // Effect to update editor when content prop changes from outside
-  useEffect(() => {
-    const quill = quillRef.current;
-    if (quill) {
-      // Check if the content is actually different to avoid cursor jumping
-      // and infinite loops.
-      if (quill.root.innerHTML !== content) {
-        quill.clipboard.dangerouslyPasteHTML(content);
-      }
-    }
-  }, [content]);
 
   return (
     <div className="bg-white text-slate-800">
