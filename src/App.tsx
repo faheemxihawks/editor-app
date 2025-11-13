@@ -2,23 +2,28 @@ import { useState } from 'react';
 import TextEditor from './components/TextEditor';
 import Preview from './components/Preview';
 import HtmlEditor from './components/HtmlEditor';
-import Settings from './components/Settings';
+import Templates from './components/Templates';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'editor' | 'preview' | 'html' | 'settings'>('editor');
+  const [activeTab, setActiveTab] = useState<'editor' | 'preview' | 'html' | 'templates'>('editor');
   const [content, setContent] = useState<string>('');
-  const [title, setTitle] = useState<string>('Your Awesome Blog Post Title');
-  const [tags, setTags] = useState<string>('react, typescript, webdev');
+  const [title, setTitle] = useState<string>('');
+  const [tags, setTags] = useState<string>('');
 
-  const tabStyles = "py-2 px-6 cursor-pointer font-medium text-slate-600 rounded-t-md";
+  const handleSelectTemplate = (template: { title: string; tags: string; content: string }) => {
+    setTitle(template.title);
+    setTags(template.tags);
+    setContent(template.content);
+    setActiveTab('editor'); // Switch to editor after selecting a template
+  };
+
+  const tabStyles = "py-2 px-6 cursor-pointer font-medium text-slate-600";
   const activeTabStyles = "text-blue-600 border-b-2 border-blue-600";
   const inactiveTabStyles = "hover:bg-slate-100 rounded-t-md";
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-800 flex flex-col items-center py-10">
       <div className="w-full max-w-5xl">
-        <h1 className="text-4xl font-bold text-center mb-2 text-slate-900">Modern Blog Editor</h1>
-        <p className="text-center text-slate-500 mb-8">Write, preview, and edit your content seamlessly.</p>
 
         <div className="bg-white rounded-xl shadow-lg">
           <div className="flex border-b border-slate-200 px-4">
@@ -31,15 +36,15 @@ function App() {
             <div className={`${tabStyles} ${activeTab === 'html' ? activeTabStyles : inactiveTabStyles}`} onClick={() => setActiveTab('html')}>
               HTML
             </div>
-            <div className={`${tabStyles} ${activeTab === 'settings' ? activeTabStyles : inactiveTabStyles}`} onClick={() => setActiveTab('settings')}>
-              Settings
+            <div className={`${tabStyles} ${activeTab === 'templates' ? activeTabStyles : inactiveTabStyles}`} onClick={() => setActiveTab('templates')}>
+              Templates
             </div>
           </div>
           <div className="relative">
             {activeTab === 'editor' && <TextEditor content={content} setContent={setContent} />}
             {activeTab === 'preview' && <Preview content={content} title={title} tags={tags} />}
             {activeTab === 'html' && <HtmlEditor content={content} setContent={setContent} />}
-            {activeTab === 'settings' && <Settings title={title} setTitle={setTitle} tags={tags} setTags={setTags} />}
+            {activeTab === 'templates' && <Templates onSelectTemplate={handleSelectTemplate} />}
           </div>
         </div>
       </div>
