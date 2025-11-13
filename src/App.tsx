@@ -7,37 +7,34 @@ function App() {
   const [activeTab, setActiveTab] = useState<'editor' | 'preview' | 'html'>('editor');
   const [content, setContent] = useState<string>('');
 
-  const tabStyles = "py-2 px-4 cursor-pointer font-semibold rounded-t-lg -mb-px";
-  const activeTabStyles = "bg-white text-blue-600 border-t border-l border-r border-gray-300";
-  const inactiveTabStyles = "bg-gray-200 text-gray-600 hover:bg-gray-300 border-t border-l border-r border-transparent";
+  const tabStyles = "py-2 px-6 cursor-pointer font-medium text-slate-600";
+  const activeTabStyles = "text-blue-600 border-b-2 border-blue-600";
+  const inactiveTabStyles = "hover:bg-slate-100 rounded-t-md";
 
   return (
-    <div className="w-full mx-auto p-4 mt-10">
-      
-      <div className="flex border-b border-gray-300">
-        <div
-          className={`${tabStyles} ${activeTab === 'editor' ? activeTabStyles : inactiveTabStyles} border border-gray-300`}
-          onClick={() => setActiveTab('editor')}
-        >
-          Editor
+    <div className="min-h-screen bg-slate-100 text-slate-800 flex flex-col items-center py-10">
+      <div className="w-full max-w-5xl">
+        <h1 className="text-4xl font-bold text-center mb-2 text-slate-900">Modern Blog Editor</h1>
+        <p className="text-center text-slate-500 mb-8">Write, preview, and edit your content seamlessly.</p>
+
+        <div className="bg-white rounded-xl shadow-lg">
+          <div className="flex border-b border-slate-200 px-4">
+            <div className={`${tabStyles} ${activeTab === 'editor' ? activeTabStyles : inactiveTabStyles}`} onClick={() => setActiveTab('editor')}>
+              Editor
+            </div>
+            <div className={`${tabStyles} ${activeTab === 'preview' ? activeTabStyles : inactiveTabStyles}`} onClick={() => setActiveTab('preview')}>
+              Preview
+            </div>
+            <div className={`${tabStyles} ${activeTab === 'html' ? activeTabStyles : inactiveTabStyles}`} onClick={() => setActiveTab('html')}>
+              HTML
+            </div>
+          </div>
+          <div className="relative">
+            {activeTab === 'editor' && <TextEditor content={content} setContent={setContent} />}
+            {activeTab === 'preview' && <Preview content={content} />}
+            {activeTab === 'html' && <HtmlEditor content={content} setContent={setContent} />}
+          </div>
         </div>
-        <div
-          className={`${tabStyles} ${activeTab === 'preview' ? activeTabStyles : inactiveTabStyles} border border-gray-300`}
-          onClick={() => setActiveTab('preview')}
-        >
-          Preview
-        </div>
-        <div
-          className={`${tabStyles} ${activeTab === 'html' ? activeTabStyles : inactiveTabStyles} border border-gray-300`}
-          onClick={() => setActiveTab('html')}
-        >
-          HTML
-        </div>
-      </div>
-      <div className="relative">
-        {activeTab === 'editor' && <TextEditor content={content} setContent={setContent} />}
-        {activeTab === 'preview' && <Preview content={content} />}
-        {activeTab === 'html' && <HtmlEditor content={content} />}
       </div>
     </div>
   )

@@ -3,5 +3,35 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-800;
+  @apply bg-slate-100;
+}
+
+/* Custom Quill Toolbar Styles */
+.ql-toolbar {
+  @apply bg-slate-50 rounded-t-lg border-slate-200;
+}
+
+.ql-toolbar .ql-stroke {
+  @apply stroke-slate-600;
+}
+
+.ql-toolbar .ql-fill {
+  @apply fill-slate-600;
+}
+
+.ql-toolbar button:hover .ql-stroke,
+.ql-toolbar .ql-picker:hover .ql-stroke {
+  @apply stroke-slate-900;
+}
+
+.ql-toolbar button:hover .ql-fill {
+  @apply fill-slate-900;
+}
+
+.ql-toolbar .ql-picker-label {
+ @apply text-slate-600;
+}
+
+.ql-toolbar .ql-active .ql-stroke {
+  @apply stroke-blue-600;
 }

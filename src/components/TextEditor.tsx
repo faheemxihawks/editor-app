@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css'; // Import Quill styles
 
@@ -8,48 +8,56 @@ interface TextEditorProps {
 }
 
 const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
+  const editorRef = useRef<HTMLDivElement>(null);
   const quillRef = useRef<Quill | null>(null);
 
-  // Use a callback ref to initialize Quill
-  const wrapperRef = useCallback((wrapper: HTMLDivElement | null) => {
-    if (wrapper == null) return;
+  // Effect to initialize the editor
+  useEffect(() => {
+    if (editorRef.current && !quillRef.current) {
+      const quill = new Quill(editorRef.current, {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            ['bold', 'italic', 'underline'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'align': [] }],
+            ['link', 'image', 'code-block', 'blockquote'],
+            ['clean']
+          ]
+        },
+        placeholder: "Start writing your blog post here...",
+      });
 
-    wrapper.innerHTML = ''; // Clear previous instances
-    const editor = document.createElement('div');
-    wrapper.append(editor);
+      quillRef.current = quill;
 
-    const q = new Quill(editor, {
-      theme: 'snow',
-      modules: {
-        toolbar: [
-          [{ 'header': [ 2, 3, 4, false] }],
-          ['bold', 'italic', 'underline'],
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-          [{ 'align': [] }],
-          ['link', 'image', 'code-block', 'blockquote'],
-          ['clean']
-        ],
-      },
-      placeholder: "Start writing your blog post here...",
-    });
-
-    // Set initial content
-    if (content) {
-      q.root.innerHTML = content;
+      // Set initial content
+      if (content) {
+        quill.clipboard.dangerouslyPasteHTML(content);
+      }
     }
+  }, [content]); // Note: content is only used for initial setup
 
-    quillRef.current = q;
-
-    // Listen for changes and update the state
-    q.on('text-change', () => {
-      setContent(q.root.innerHTML);
-    });
-    
-  }, [content, setContent]);
+  // Effect to handle text changes
+  useEffect(() => {
+    const quill = quillRef.current;
+    if (quill) {
+      const handler = (delta: any, oldDelta: any, source: string) => {
+        if (source === 'user') {
+          setContent(quill.root.innerHTML);
+        }
+      };
+      quill.on('text-change', handler);
+      return () => {
+        quill.off('text-change', handler);
+      };
+    }
+  }, [setContent]);
 
   return (
-    <div className="bg-white text-gray-800">
-      <div ref={wrapperRef} style={{ minHeight: '24rem' }}></div>
+    <div className="bg-white text-slate-800">
+      {/* The editor container itself */}
+      <div ref={editorRef} style={{ minHeight: '24rem' }}></div>
     </div>
   );
 };
