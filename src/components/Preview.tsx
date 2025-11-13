@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import Button from './ui/Button';
 
 interface PreviewProps {
   content: string;
+  Type?: string;
 }
 
 type PreviewWidth = 'mobile' | 'tablet' | 'full';
 
-const Preview: React.FC<PreviewProps> = ({ content }) => {
+const Preview: React.FC<PreviewProps> = ({ content, Type }) => {
   const [width, setWidth] = useState<PreviewWidth>('full');
 
   const getWidthClass = () => {
@@ -21,32 +21,52 @@ const Preview: React.FC<PreviewProps> = ({ content }) => {
     }
   };
 
+  const getTypeClass = () => {
+    switch (Type) {
+      case 'ai':
+        return 'ai-tool-blog-details';
+      case 'news':
+        return 'news-details-content';
+      default:
+        return '';
+    }
+  };
+
   return (
     <div className="bg-slate-200 rounded-b-xl">
       {/* Viewport Control Toolbar */}
       <div className="p-3 border-b border-slate-300 flex items-center justify-center space-x-2">
         <span className="text-sm font-medium text-slate-500 mr-2">View As:</span>
-        <Button
-          size="sm"
-          variant={width === 'mobile' ? 'primary' : 'secondary'}
+        <button
+          className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+            width === 'mobile' ? 'bg-blue-500 text-white' : 'bg-slate-300 text-slate-700 hover:bg-slate-400'
+          }`}
           onClick={() => setWidth('mobile')}
-        >Mobile</Button>
-        <Button
-          size="sm"
-          variant={width === 'tablet' ? 'primary' : 'secondary'}
+        >
+          Mobile
+        </button>
+        <button
+          className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+            width === 'tablet' ? 'bg-blue-500 text-white' : 'bg-slate-300 text-slate-700 hover:bg-slate-400'
+          }`}
           onClick={() => setWidth('tablet')}
-        >Tablet</Button>
-        <Button
-          size="sm"
-          variant={width === 'full' ? 'primary' : 'secondary'}
+        >
+          Tablet
+        </button>
+        <button
+          className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+            width === 'full' ? 'bg-blue-500 text-white' : 'bg-slate-300 text-slate-700 hover:bg-slate-400'
+          }`}
           onClick={() => setWidth('full')}
-        >Desktop</Button>
+        >
+          Desktop
+        </button>
       </div>
 
       {/* Content Preview Area */}
       <div className="p-8 flex justify-center overflow-auto" style={{ minHeight: '26rem' }}>
         <div
-          className={`prose prose-lg bg-white p-6 shadow-md rounded-md ${getWidthClass()} w-full transition-all duration-300 ease-in-out`}
+          className={`prose prose-lg ${getTypeClass()} bg-white p-6 shadow-md rounded-md ${getWidthClass()} w-full transition-all duration-300 ease-in-out`}
           dangerouslySetInnerHTML={{ __html: content || '<p class="text-slate-400">Your content will appear here...</p>' }}
         />
       </div>

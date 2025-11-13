@@ -55,9 +55,9 @@ const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
   }, [setContent]);
 
   return (
-    <div className="bg-white text-slate-800">
+    <div className="bg-white text-slate-800 ">
       {/* The editor container itself */}
-      <div ref={editorRef} style={{ minHeight: '24rem' }}></div>
+      <div ref={editorRef} style={{ minHeight: '24rem' }} className='max-h-[26rem] overflow-auto'></div>
     </div>
   );
 };

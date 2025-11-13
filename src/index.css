@@ -35,3 +35,58 @@ body {
 .ql-toolbar .ql-active .ql-stroke {
   @apply stroke-blue-600;
 }
+
+
+/* /////////////////////////////////////////
+editor styling her 
+///////////////////////////////////////////// */
+
+.ai-tool-blog-details h2{
+  font-weight: 600 !important;
+  font-size: 30px !important;
+}
+.ai-tool-blog-details h1{
+    font-weight: 600 !important;
+  font-size: 30px !important;
+  background-image: linear-gradient(90deg, #FF8600 0%, #FDBD01 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+.ai-tool-blog-details h3{
+  font-weight: 600 !important;
+  font-size: 24px !important;
+}
+
+.news-details-content h2{
+  font-weight: 600 !important;
+  font-size: 30px !important;
+  background-image: linear-gradient(90deg, #FF8600 0%, #FDBD01 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+.news-details-content h3{
+  font-weight: 600 !important;
+  font-size: 24px !important;
+  background-image: linear-gradient(90deg, #FF8600 0%, #FDBD01 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+.news-details-content h4{
+  font-weight: 600 !important;
+  font-size: 20px !important;
+  background-image: linear-gradient(90deg, #FF8600 0%, #FDBD01 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+blockquote {
+  border-left: 4px solid #FF8600 !important;
+  padding-left: 1rem !important;
+  margin: 1rem 0 !important;
+  font-style: italic !important;
+}
