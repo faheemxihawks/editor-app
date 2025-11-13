@@ -42,7 +42,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
   useEffect(() => {
     const quill = quillRef.current;
     if (quill) {
-      const handler = (delta: any, oldDelta: any, source: string) => {
+      const handler = (_delta: any, _oldDelta: any, source: string) => {
         if (source === 'user') {
           setContent(quill.root.innerHTML);
         }
