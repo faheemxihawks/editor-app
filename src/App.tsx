@@ -7,12 +7,8 @@ import Templates from './components/Templates';
 function App() {
   const [activeTab, setActiveTab] = useState<'editor' | 'preview' | 'html' | 'templates'>('editor');
   const [content, setContent] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
-  const [tags, setTags] = useState<string>('');
 
   const handleSelectTemplate = (template: { title: string; tags: string; content: string }) => {
-    setTitle(template.title);
-    setTags(template.tags);
     setContent(template.content);
     setActiveTab('editor'); // Switch to editor after selecting a template
   };
@@ -42,7 +38,7 @@ function App() {
           </div>
           <div className="relative">
             {activeTab === 'editor' && <TextEditor content={content} setContent={setContent} />}
-            {activeTab === 'preview' && <Preview content={content} title={title} tags={tags} />}
+            {activeTab === 'preview' && <Preview content={content} />}
             {activeTab === 'html' && <HtmlEditor content={content} setContent={setContent} />}
             {activeTab === 'templates' && <Templates onSelectTemplate={handleSelectTemplate} />}
           </div>

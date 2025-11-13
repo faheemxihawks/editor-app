@@ -3,13 +3,11 @@ import Button from './ui/Button';
 
 interface PreviewProps {
   content: string;
-  title: string;
-  tags: string;
 }
 
 type PreviewWidth = 'mobile' | 'tablet' | 'full';
 
-const Preview: React.FC<PreviewProps> = ({ content, title, tags }) => {
+const Preview: React.FC<PreviewProps> = ({ content }) => {
   const [width, setWidth] = useState<PreviewWidth>('full');
 
   const getWidthClass = () => {
