@@ -2,12 +2,15 @@ import { useState } from 'react';
 import TextEditor from './components/TextEditor';
 import Preview from './components/Preview';
 import HtmlEditor from './components/HtmlEditor';
+import Settings from './components/Settings';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'editor' | 'preview' | 'html'>('editor');
+  const [activeTab, setActiveTab] = useState<'editor' | 'preview' | 'html' | 'settings'>('editor');
   const [content, setContent] = useState<string>('');
+  const [title, setTitle] = useState<string>('Your Awesome Blog Post Title');
+  const [tags, setTags] = useState<string>('react, typescript, webdev');
 
-  const tabStyles = "py-2 px-6 cursor-pointer font-medium text-slate-600";
+  const tabStyles = "py-2 px-6 cursor-pointer font-medium text-slate-600 rounded-t-md";
   const activeTabStyles = "text-blue-600 border-b-2 border-blue-600";
   const inactiveTabStyles = "hover:bg-slate-100 rounded-t-md";
 
@@ -28,11 +31,15 @@ function App() {
             <div className={`${tabStyles} ${activeTab === 'html' ? activeTabStyles : inactiveTabStyles}`} onClick={() => setActiveTab('html')}>
               HTML
             </div>
+            <div className={`${tabStyles} ${activeTab === 'settings' ? activeTabStyles : inactiveTabStyles}`} onClick={() => setActiveTab('settings')}>
+              Settings
+            </div>
           </div>
           <div className="relative">
             {activeTab === 'editor' && <TextEditor content={content} setContent={setContent} />}
-            {activeTab === 'preview' && <Preview content={content} />}
+            {activeTab === 'preview' && <Preview content={content} title={title} tags={tags} />}
             {activeTab === 'html' && <HtmlEditor content={content} setContent={setContent} />}
+            {activeTab === 'settings' && <Settings title={title} setTitle={setTitle} tags={tags} setTags={setTags} />}
           </div>
         </div>
       </div>
