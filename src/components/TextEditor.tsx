@@ -12,38 +12,34 @@ const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const quillRef = useRef<Quill | null>(null);
 
-  // --- Axios Image Upload Function ---
+  // === FIXED IMAGE UPLOAD FUNCTION ===
   const uploadImageToServer = async (file: File) => {
     try {
       const formData = new FormData();
-      // The field name "image" must match the server's expected field name.
-      formData.append("image", file);
+      formData.append("file", file); // MUST be "media"
 
-      const response = await axios.post("http://localhost:3000/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        onUploadProgress: (e) => {
-          const progress = Math.round((e.loaded * 100) / (e.total || 1));
-          console.log("Upload progress:", progress + "%");
-        },
-      });
+      const response = await axios.post(
+        "https://aichief-be-beige.vercel.app/api/media/upload",
+        formData,
+        {
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Nzg3MTJiN2U3NmNjYjViMDA2N2JlYSIsInJvbGUiOiJzdXBlckFkbWluIiwiaWF0IjoxNzYyNzY2OTE2LCJleHAiOjE3NjMxOTg5MTZ9.lOtXFT7WqViP-P6xx6YgGYIKv5R9bajlRTng23-QOG8",
+          },
+        }
+      );
 
-      console.log("Upload successful:", response.data);
+      console.log("Upload Response:", response.data);
 
-      // The server returns a `path`, so we construct the full URL.
-      const imageUrl = `http://localhost:3000${response.data.path}`;
-      
-      // The Quill handler expects an object with a `url` property.
-      return { url: imageUrl };
-
-    } catch (error: any) {
-      console.error("Upload failed:", error.response?.data?.error || error.message);
+      // FIX: URL is inside data.data.url
+      return response.data?.data?.url;
+    } catch (error) {
+      console.error("Upload error:", error);
       throw error;
     }
   };
 
-  // --- Custom Image Handler for Quill ---
+  // === CUSTOM IMAGE HANDLER ===
   const handleImageUpload = (quill: Quill) => {
     const input = document.createElement("input");
     input.type = "file";
@@ -53,39 +49,37 @@ const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
       const file = input.files?.[0];
       if (!file) return;
 
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        alert('Please select an image file');
+      if (!file.type.startsWith("image/")) {
+        alert("Please select an image file");
         return;
       }
 
-      // Validate file size (5MB limit to match server)
       if (file.size > 5 * 1024 * 1024) {
-        alert('File size exceeds 5MB limit');
+        alert("File size exceeds 5MB");
         return;
       }
 
       try {
-        const { url } = await uploadImageToServer(file);
-        if (!url) {
-          console.error("Server did not return image URL");
+        const imageUrl = await uploadImageToServer(file);
+
+        if (!imageUrl) {
+          alert("Failed to upload image. Server did not return URL.");
           return;
         }
 
         const range = quill.getSelection(true);
-        quill.insertEmbed(range.index, "image", url);
+        quill.insertEmbed(range.index, "image", imageUrl);
         quill.setSelection(range.index + 1);
-
-      } catch (error) {
-        console.error("Image upload failed", error);
-        alert("Failed to upload image. Please try again.");
+      } catch (err) {
+        console.error(err);
+        alert("Image upload failed");
       }
     };
 
     input.click();
   };
 
-  // --- Initialize Quill ---
+  // === INIT QUILL ===
   useEffect(() => {
     if (editorRef.current && !quillRef.current) {
       const quill = new Quill(editorRef.current, {
@@ -93,11 +87,11 @@ const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
         modules: {
           toolbar: {
             container: [
-              [{ header: [1, 2, 3, 4, 5, 6, false] }],
+              [{ header: [1, 2, 3, false] }],
               ["bold", "italic", "underline"],
               [{ list: "ordered" }, { list: "bullet" }],
               [{ align: [] }],
-              ["link", "image", "code-block", "blockquote"],
+              ["link", "image"],
               ["clean"],
             ],
             handlers: {
@@ -107,7 +101,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
             },
           },
         },
-        placeholder: "Start writing your blog post here...",
+        placeholder: "Start writing...",
       });
 
       quillRef.current = quill;
@@ -116,15 +110,14 @@ const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
         quill.clipboard.dangerouslyPasteHTML(content);
       }
     }
-  }, [content]);
+  }, []);
 
-  // --- Sync Editor Content ---
+  // === UPDATE CONTENT ===
   useEffect(() => {
     const quill = quillRef.current;
     if (!quill) return;
 
     const handler = () => setContent(quill.root.innerHTML);
-
     quill.on("text-change", handler);
 
     return () => {
@@ -138,7 +131,7 @@ const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
         ref={editorRef}
         style={{ minHeight: "24rem" }}
         className="max-h-[26rem] overflow-auto"
-      ></div>
+      />
     </div>
   );
 };

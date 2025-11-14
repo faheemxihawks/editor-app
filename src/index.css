@@ -45,14 +45,7 @@ editor styling her
   font-weight: 600 !important;
   font-size: 30px !important;
 }
-.ai-tool-blog-details h1{
-    font-weight: 600 !important;
-  font-size: 30px !important;
-  background-image: linear-gradient(90deg, #FF8600 0%, #FDBD01 100%) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  color: transparent !important;
-}
+
 
 .ai-tool-blog-details h3{
   font-weight: 600 !important;

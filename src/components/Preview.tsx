@@ -6,9 +6,11 @@ interface PreviewProps {
 }
 
 type PreviewWidth = 'mobile' | 'tablet' | 'full';
+type Theme = 'light' | 'dark';
 
 const Preview: React.FC<PreviewProps> = ({ content, Type }) => {
   const [width, setWidth] = useState<PreviewWidth>('full');
+  const [theme, setTheme] = useState<Theme>('light');
 
   const getWidthClass = () => {
     switch (width) {
@@ -30,6 +32,13 @@ const Preview: React.FC<PreviewProps> = ({ content, Type }) => {
       default:
         return '';
     }
+  };
+
+  const getThemeClass = () => {
+    if (theme === 'dark') {
+      return 'bg-gray-800 text-white';
+    }
+    return 'bg-white text-gray-800';
   };
 
   return (
@@ -59,14 +68,32 @@ const Preview: React.FC<PreviewProps> = ({ content, Type }) => {
           }`}
           onClick={() => setWidth('full')}
         >
+
           Desktop
+        </button>
+        <div className="border-l border-slate-400 h-6 mx-2"></div>
+        <button
+          className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+            theme === 'light' ? 'bg-yellow-400 text-white' : 'bg-slate-300 text-slate-700 hover:bg-slate-400'
+          }`}
+          onClick={() => setTheme('light')}
+        >
+          Light
+        </button>
+        <button
+          className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
+            theme === 'dark' ? 'bg-gray-800 text-white' : 'bg-slate-300 text-slate-700 hover:bg-slate-400'
+          }`}
+          onClick={() => setTheme('dark')}
+        >
+          Dark
         </button>
       </div>
 
       {/* Content Preview Area */}
-      <div className="p-8 flex justify-center overflow-auto" style={{ minHeight: '26rem' }}>
+      <div className={`p-8 flex justify-center overflow-auto ${theme === 'dark' ? 'bg-gray-900' : 'bg-slate-200'}`} style={{ minHeight: '26rem' }}>
         <div
-          className={`${getTypeClass()} blockquote bg-white p-6 shadow-md rounded-md ${getWidthClass()} w-full transition-all duration-300 ease-in-out`}
+          className={`${getTypeClass()} blockquote p-6 shadow-md rounded-md ${getWidthClass()} w-full transition-all duration-300 ease-in-out ${getThemeClass()}`}
           dangerouslySetInnerHTML={{ __html: content || '<p class="text-slate-400">Your content will appear here...</p>' }}
         />
       </div>
