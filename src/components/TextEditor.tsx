@@ -126,7 +126,10 @@ const TextEditor: React.FC<TextEditorProps> = ({ content, setContent }) => {
     const handler = () => setContent(quill.root.innerHTML);
 
     quill.on("text-change", handler);
-    return () => quill.off("text-change", handler);
+
+    return () => {
+      quill.off("text-change", handler);
+    };
   }, [setContent]);
 
   return (
