@@ -66,7 +66,7 @@ const Preview: React.FC<PreviewProps> = ({ content, Type }) => {
       {/* Content Preview Area */}
       <div className="p-8 flex justify-center overflow-auto" style={{ minHeight: '26rem' }}>
         <div
-          className={`prose prose-lg ${getTypeClass()} bg-white p-6 shadow-md rounded-md ${getWidthClass()} w-full transition-all duration-300 ease-in-out`}
+          className={`prose prose-lg ${getTypeClass()} blockquote bg-white p-6 shadow-md rounded-md ${getWidthClass()} w-full transition-all duration-300 ease-in-out`}
           dangerouslySetInnerHTML={{ __html: content || '<p class="text-slate-400">Your content will appear here...</p>' }}
         />
       </div>

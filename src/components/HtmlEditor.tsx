@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 
 interface HtmlEditorProps {
   content: string;
